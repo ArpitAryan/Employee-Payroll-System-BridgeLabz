@@ -4,6 +4,11 @@
     "name": "Arpit",
     "department": "IT",
     "basicSalary": 50000
+  },
+  {
+    "id": 1771392104222,
+    "name": "meer pathak",
+    "department": "CEO",
+    "basicSalary": 20000000
   }
 ]
-

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Employee Payroll • Dashboard</title>
+
+  <!-- icons + fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>
+        <span class="logo"><i class="ri-coins-line" style="font-size:20px"></i></span>
+        Employee Payroll
+      </h1>
+    </header>
+
+    <div class="card">
+      <div class="toolbar">
+        <div class="left-tools">
+          <div class="search">
+            <i class="ri-search-line"></i>
+            <input placeholder="Search by name or department" id="searchInput" />
+          </div>
+          <span class="hint">Total: <strong><%= employees.length %></strong> employees</span>
+        </div>
+
+        <div class="right-tools">
+          <a class="btn btn-primary" href="/add"><i class="ri-user-add-line"></i> Add Employee</a>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th><i class="ri-user-line"></i> Name</th>
+              <th><i class="ri-building-line"></i> Department</th>
+              <th><i class="ri-money-rupee-circle-line"></i> Basic</th>
+              <th><i class="ri-percent-line"></i> Tax (12%)</th>
+              <th><i class="ri-wallet-3-line"></i> Net</th>
+              <th style="text-align:right"><i class="ri-settings-3-line"></i></th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <% if (employees.length === 0) { %>
+              <tr><td colspan="6" style="text-align:center;color:var(--muted)">No employees yet. Add one to get started.</td></tr>
+            <% } else { %>
+              <% employees.forEach(emp => { 
+                   const tax = emp.basicSalary * 0.12;
+                   const net = emp.basicSalary - tax;
+              %>
+                <tr>
+                  <td><div class="pill"><i class="ri-user-3-line"></i> <span><%= emp.name %></span></div></td>
+                  <td><%= emp.department %></td>
+                  <td class="currency">₹ <%= Number(emp.basicSalary).toFixed(2) %></td>
+                  <td>₹ <%= tax.toFixed(2) %></td>
+                  <td>₹ <%= net.toFixed(2) %></td>
+                  <td class="row-actions" style="justify-content:flex-end">
+                    <a class="icon-btn icon-edit" href="/edit/<%= emp.id %>" title="Edit">
+                      <i class="ri-edit-line"></i>
+                    </a>
+                    <a class="icon-btn icon-delete" href="/delete/<%= emp.id %>" title="Delete" onclick="return confirm('Delete this employee?')">
+                      <i class="ri-delete-bin-line"></i>
+                    </a>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="hint">Tip: Click <i class="ri-edit-line"></i> to update salary or department.</p>
+    </div>
+  </div>
+
+  <script>
+    // simple client-side filter (non-essential, adds polish)
+    const input = document.getElementById('searchInput');
+    const tbody = document.getElementById('tableBody');
+    input && input.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      Array.from(tbody.querySelectorAll('tr')).forEach(row => {
+        const txt = row.innerText.toLowerCase();
+        row.style.display = txt.includes(q) ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

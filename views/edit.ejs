@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Edit Employee • Payroll</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1><span class="logo"><i class="ri-edit-2-line"></i></span> Edit Employee</h1>
+      <p>Update their details — salary must be non-negative</p>
+    </header>
+
+    <div class="card">
+      <% if (error) { %>
+        <div class="error"><%= decodeURIComponent(error) %></div>
+      <% } %>
+
+      <form action="/edit/<%= employee.id %>" method="POST" class="form-grid">
+        <div class="form-row">
+          <label><i class="ri-user-line"></i> Full name</label>
+          <input name="name" type="text" value="<%= employee.name %>" required>
+        </div>
+
+        <div class="form-row">
+          <label><i class="ri-building-line"></i> Department</label>
+          <input name="department" type="text" value="<%= employee.department %>">
+        </div>
+
+        <div class="form-row">
+          <label><i class="ri-money-rupee-circle-line"></i> Basic Salary (₹)</label>
+          <input name="basicSalary" type="number" min="0" step="0.01" value="<%= employee.basicSalary %>" required>
+        </div>
+
+        <div class="form-row full" style="display:flex;gap:10px;justify-content:flex-end">
+          <a class="btn btn-outline" href="/">Cancel</a>
+          <button class="btn btn-primary" type="submit"><i class="ri-save-3-line"></i> Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
